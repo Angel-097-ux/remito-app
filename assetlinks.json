@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.remitoapp.angel097",
+        "sha256_cert_fingerprints": ["17:60:64:4B:DC:BF:66:87:01:C9:C6:B1:82:82:C5:DC:F0:9B:4E:B1:90:41:A5:10:F5:16:6F:11:4A:2B:64:BA"]
+      }
+    }]
