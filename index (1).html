@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Remito App" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Remito App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== PANTALLA HOME ===== -->
+<div id="screen-home" class="screen active">
+  <div class="home-bg"></div>
+  <div class="home-content">
+    <div class="brand-badge">✦ GESTOR DE REMITOS</div>
+    <h1 class="home-title">Remito<span class="accent">App</span></h1>
+    <p class="home-sub">Creá, completá e imprimí remitos de venta desde tu celular en segundos.</p>
+    <button class="btn-hero" onclick="irA('screen-nuevo')">
+      <span>Crear Remito</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <button class="btn-sec" onclick="irA('screen-config')">
+      ⚙️ Mis Datos de Empresa
+    </button>
+    <div class="home-note">
+      📱 Instalá esta app desde tu navegador:<br>
+      <strong>Android (Chrome):</strong> Menú → "Instalar app"<br>
+      <strong>iOS (Safari):</strong> Compartir → "Agregar al inicio"
+    </div>
+  </div>
+</div>
+
+<!-- ===== PANTALLA CONFIG ===== -->
+<div id="screen-config" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="irA('screen-home')">← Volver</button>
+    <span class="topbar-title">Mis Datos</span>
+    <button class="save-btn" onclick="guardarConfig()">Guardar</button>
+  </div>
+  <div class="form-container">
+    <div class="section-label">🏢 Datos de tu empresa / negocio</div>
+    <div class="field-group">
+      <label>Nombre / Razón Social</label>
+      <input type="text" id="cfg-nombre" placeholder="Ej: Juan Pérez Distribuciones" />
+    </div>
+    <div class="field-group">
+      <label>Rubro / Descripción</label>
+      <input type="text" id="cfg-rubro" placeholder="Ej: Logística y Distribución" />
+    </div>
+    <div class="field-group">
+      <label>Teléfono</label>
+      <input type="tel" id="cfg-tel" placeholder="Ej: 011-4567-8901" />
+    </div>
+    <div class="field-group">
+      <label>Ciudad / Provincia</label>
+      <input type="text" id="cfg-ciudad" placeholder="Ej: Buenos Aires - Argentina" />
+    </div>
+    <div class="field-group">
+      <label>CUIT (opcional)</label>
+      <input type="text" id="cfg-cuit" placeholder="Ej: 20-12345678-9" />
+    </div>
+    <div class="field-group">
+      <label>Email (opcional)</label>
+      <input type="email" id="cfg-email" placeholder="Ej: info@miempresa.com" />
+    </div>
+    <p class="config-hint">💡 Estos datos aparecerán automáticamente en todos tus remitos.</p>
+  </div>
+</div>
+
+<!-- ===== PANTALLA NUEVO REMITO ===== -->
+<div id="screen-nuevo" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="irA('screen-home')">← Inicio</button>
+    <span class="topbar-title">Nuevo Remito</span>
+    <button class="save-btn" onclick="imprimirRemito()">🖨 Imprimir</button>
+  </div>
+
+  <div class="remito-body" id="remito-body">
+
+    <!-- Encabezado empresa -->
+    <div class="remito-header">
+      <div class="empresa-col">
+        <div class="empresa-icon">📦</div>
+        <div class="empresa-info">
+          <div class="empresa-nombre" id="show-nombre">MI EMPRESA</div>
+          <div class="empresa-det" id="show-rubro">Rubro / Descripción</div>
+          <div class="empresa-det" id="show-tel">Teléfono</div>
+          <div class="empresa-det" id="show-ciudad">Ciudad</div>
+        </div>
+      </div>
+      <div class="doc-col">
+        <div class="doc-badge">REMITO</div>
+        <div class="doc-sub">ORIGINAL</div>
+        <div class="doc-fields">
+          <div class="doc-field"><span>N°</span><input type="text" id="rem-numero" placeholder="0001-00001" /></div>
+          <div class="doc-field"><span>FECHA</span><input type="date" id="rem-fecha" /></div>
+          <div class="doc-field"><span>MARCA</span><input type="text" id="rem-marca" placeholder="Opcional" /></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos cliente -->
+    <div class="cliente-card">
+      <div class="cliente-row"><span>CLIENTE</span><input type="text" placeholder="Nombre completo o razón social" /></div>
+      <div class="cliente-row"><span>DOMICILIO</span><input type="text" placeholder="Dirección de entrega" /></div>
+      <div class="cliente-row"><span>CUIT</span><input type="text" placeholder="XX-XXXXXXXX-X" /></div>
+      <div class="cliente-row"><span>TEL</span><input type="tel" placeholder="Teléfono del cliente" /></div>
+    </div>
+
+    <!-- Tabla productos -->
+    <div class="tabla-header">DETALLE DE MERCADERÍA</div>
+    <div class="tabla-cols">
+      <span style="width:18%">CANT.</span>
+      <span style="flex:1">DESCRIPCIÓN</span>
+      <span style="width:22%">P. UNIT.</span>
+      <span style="width:22%">IMPORTE</span>
+    </div>
+    <div id="items-list"></div>
+
+    <button class="btn-add-row" onclick="agregarFila()">＋ Agregar producto</button>
+
+    <!-- Total -->
+    <div class="total-box">
+      <span>TOTAL A ABONAR</span>
+      <span id="gran-total" class="total-num">$ 0,00</span>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="obs-block">
+      <div class="obs-label">OBSERVACIONES</div>
+      <textarea id="obs-text" placeholder="Condiciones de pago, notas, aclaraciones..."></textarea>
+    </div>
+
+    <!-- Firma -->
+    <div class="firma-block">
+      <div class="firma-line"></div>
+      <div class="firma-texto">Firma y aclaración</div>
+    </div>
+
+    <!-- Botones acción -->
+    <div class="actions-bottom no-print">
+      <button class="btn-action-sec" onclick="limpiarRemito()">🗑 Limpiar todo</button>
+      <button class="btn-action-pri" onclick="imprimirRemito()">🖨 Imprimir / PDF</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
